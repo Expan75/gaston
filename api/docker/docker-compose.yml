@@ -1,0 +1,14 @@
+version: latest
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    # Uncomment to debug database queries
+    # command: ["postgres", "-c", "log_statement=all", "-c", "log_destination=stderr"]

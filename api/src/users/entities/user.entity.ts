@@ -32,16 +32,19 @@ export abstract class BaseEntity {
     updatedAt: Date = new Date();
 }
 
+@Entity({ tableName: 'restaurants' })
 export class Restaurant extends BaseEntity {
-
     @Property()
     name!: string
+
+    @Property()
+    address!: string
 
     @OneToMany('User', 'restaurant')
     users = new Collection<User>(this);
 }
 
-@Entity()
+@Entity({ tableName: 'users' })
 @Unique({ properties: ['email'] })
 export class User extends BaseEntity {
     @Property()

@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { DatabaseModule } from './database/database.module';
 import * as Joi from 'joi';
-
-console.log(__dirname + '/**/*.entity{.ts,.js}')
+import config from './mikro-orm.config';
 
 @Module({
   imports: [
@@ -15,28 +13,18 @@ console.log(__dirname + '/**/*.entity{.ts,.js}')
           .valid('development', 'test', 'production')
           .default('development'),
         PORT: Joi.number().default(3000),
-        DATABASE_HOST: Joi.string().required(),
-        DATABASE_PORT: Joi.number().default(5432),
-        DATABASE_NAME: Joi.string().default('gaston'),
-        DATABASE_USERNAME: Joi.string().required(),
-        DATABASE_PASSWORD: Joi.string().required(),
+        MIKRO_ORM_TYPE: Joi.string().default('postgresql'),
+        MIKRO_ORM_ENTITIES: Joi.string().default('./dist/**/*.entity.js'),
+        MIKRO_ORM_ENTITIES_TS: Joi.string().default('./src/**/*.entity.ts'),
+        MIKRO_ORM_DB_HOST: Joi.string().default('localhost'),
+        MIKRO_ORM_DB_PORT: Joi.number().default(5432),
+        MIKRO_ORM_DB_USER: Joi.string().default('gaston'),
+        MIKRO_ORM_DB_NAME: Joi.string().default('gaston'),
+        MIKRO_ORM_DB_PASSWORD: Joi.string().required(),
       }),
     }),
-    MikroOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgresql',
-        host: configService.get('DATABASE_HOST'),
-        port: configService.get('DATABASE_PORT'),
-        dbName: configService.get('DATABASE_NAME'),
-        username: configService.get('DATABASE_USERNAME'),
-        password: configService.get('DATABASE_PASSWORD'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      }),
-      inject: [ConfigService]
-    }),
+    MikroOrmModule.forRoot(),
     UsersModule,
-    DatabaseModule,
   ],
   controllers: [],
   providers: [],

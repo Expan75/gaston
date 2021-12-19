@@ -14,6 +14,7 @@ export class UsersController {
     return createdUser;
   };
 
+
   @Get()
   async findAll() {
     const users = await this.usersService.findAll();
@@ -35,6 +36,5 @@ export class UsersController {
   @Delete(':uuid')
   async remove(@Param('uuid') uuid: string, @Res() res: Response) {
     await this.usersService.remove(uuid);
-    res.sendStatus(204)
   };
 };

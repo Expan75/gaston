@@ -1,15 +1,17 @@
-/* configuration for mikro-orm cli */
-import { Logger } from '@nestjs/common';
 import { Options } from '@mikro-orm/core';
-import { Restaurant, User } from './users/entities/user.entity';
+import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 
-// relies on automagic env vars (see app.module)
-const logger = new Logger('MikroORM');
-logger.debug('path: ', __dirname + '/**/*.entity.{ts,js}')
-const config = {
-    entities: [__dirname + '/**/*.entity.js'],
-    entitiesTs: [__dirname + '/**/*.entity.ts,js}'],
+const config: Options = {
+    type: 'postgresql',
+    host: process.env.MIKRO_ORM_DB_HOST,
+    port: Number(process.env.MIKRO_ORM_DB_PORT),
+    user: process.env.MIKRO_ORM_DB_USER,
+    password: process.env.MIKRO_ORM_DB_PASSWORD,
+    dbName: process.env.MIKRO_ORM_DB_NAME,
+    entities: ['dist/**/*.entity.js'],
+    entitiesTs: ['src/**/*.entity.ts'],
     debug: true,
-    logger: logger.log.bind(logger),
-} as Options;
+    metadataProvider: TsMorphMetadataProvider,
+};
+
 export default config;

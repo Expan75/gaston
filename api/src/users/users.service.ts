@@ -6,7 +6,7 @@ import { EntityManager } from '@mikro-orm/postgresql';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly em: EntityManager) {}
+  constructor(private readonly em: EntityManager) { }
 
   async create(createUserDto: CreateUserDto) {
     const user = this.em.create(User, createUserDto);

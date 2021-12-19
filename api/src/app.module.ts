@@ -28,4 +28,4 @@ import * as Joi from 'joi';
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

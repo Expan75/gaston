@@ -10,12 +10,14 @@ import 'reflect-metadata';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
+  );
   app.enableShutdownHooks(); // prevent lingering db connections https://github.com/mikro-orm/nestjs
   app.use(cookieParser());
 
   // swagger/OpenAPI
-  if (configService.get("NODE_ENV") === "development") {
+  if (configService.get('NODE_ENV') === 'development') {
     const swaggerPath = '/docs';
     const swaggerDocumentBuilder = new DocumentBuilder()
       .setTitle('Gaston API')
@@ -23,7 +25,10 @@ async function bootstrap() {
       .addBearerAuth()
       .addCookieAuth(configService.get('JWT_REFRESH_COOKIE_NAME'))
       .build();
-    const swaggerDocument = SwaggerModule.createDocument(app, swaggerDocumentBuilder);
+    const swaggerDocument = SwaggerModule.createDocument(
+      app,
+      swaggerDocumentBuilder,
+    );
     if (configService.get('OPENAPI_PASSWORD')) {
       app.use(
         swaggerPath,

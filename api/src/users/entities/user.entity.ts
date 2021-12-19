@@ -45,7 +45,6 @@ export class Restaurant extends BaseEntity {
 }
 
 @Entity({ tableName: 'users' })
-@Unique({ properties: ['email'] })
 export class User extends BaseEntity {
     @Property()
     @Unique()

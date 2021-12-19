@@ -10,7 +10,8 @@ const config: Options = {
     dbName: process.env.MIKRO_ORM_DB_NAME,
     entities: ['dist/**/*.entity.js'],
     entitiesTs: ['src/**/*.entity.ts'],
-    debug: true,
+    migrations: { disableForeignKeys: false },
+    debug: true ? process.env.NODE_ENV === "development" : false,
     metadataProvider: TsMorphMetadataProvider,
 };
 

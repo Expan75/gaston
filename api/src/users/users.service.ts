@@ -1,46 +1,48 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { instanceToPlain, plainToInstance, plainToClassFromExist } from 'class-transformer';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { EntityManager } from '@mikro-orm/postgresql';
+
 
 @Injectable()
 export class UsersService {
 
-  private users: User[] = []
+  constructor(
+    private readonly em: EntityManager
+  ) { };
 
-  create(createUserDto: CreateUserDto) {
-    const userProperties = instanceToPlain(createUserDto);
-    const user = plainToInstance(User, userProperties);
-    this.users.push(user);
-    console.log(this.users)
+  async create(createUserDto: CreateUserDto) {
+    const user = this.em.create(User, createUserDto);
+    await this.em.persist(user).flush();
     return user;
   };
 
-  findAll() {
-    return this.users;
+  async findAll() {
+    const users = await this.em.find(User, {})
+    return users
   };
 
-  findOne(uuid: string) {
-    return this.users.find(user => user.uuid === uuid);
+  async findOne(uuid: string) {
+    const user = await this.em.findOne(User, { uuid: uuid });
+    return user
   };
 
-  update(uuid: string, updateUserDto: UpdateUserDto) {
-    const existingUser = this.findOne(uuid)
-    if (existingUser) {
-      const updatedUser = plainToClassFromExist(existingUser, updateUserDto)
-      this.users[this.users.indexOf(existingUser)] = updatedUser
-      return updatedUser
+  async update(uuid: string, updateUserDto: UpdateUserDto) {
+    const user = await this.findOne(uuid)
+    if (user) {
+      Object.assign(user, updateUserDto)
+      await this.em.flush()
+      return user
     } else {
       throw new InternalServerErrorException(`Failed to update user as none with uuid=${uuid} exist.`)
     }
   };
 
-  remove(uuid: string) {
-    const existingUser = this.findOne(uuid)
+  async remove(uuid: string) {
+    const existingUser = await this.findOne(uuid)
     if (existingUser) {
-      this.users = this.users.filter(user => user.uuid !== uuid)
-      return true
+      await this.em.remove(existingUser).flush()
     } else {
       throw new InternalServerErrorException(`Failed to remove user as none with uuid=${uuid} exist.`)
     }

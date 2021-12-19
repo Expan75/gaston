@@ -3,7 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import * as Joi from 'joi';
-import config from './mikro-orm.config';
 
 @Module({
   imports: [

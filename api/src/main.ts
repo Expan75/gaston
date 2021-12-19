@@ -9,6 +9,7 @@ async function bootstrap() {
     whitelist: true,
     forbidNonWhitelisted: true
   }));
+  app.enableShutdownHooks(); // prevent lingering db connections https://github.com/mikro-orm/nestjs
   await app.listen(3000);
 }
 bootstrap();

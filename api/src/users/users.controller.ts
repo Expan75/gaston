@@ -1,34 +1,40 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, Res } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Response } from 'express';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) { };
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
+  async create(@Body() createUserDto: CreateUserDto) {
+    const createdUser = await this.usersService.create(createUserDto);
+    return createdUser;
+  };
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
-  }
+  async findAll() {
+    const users = await this.usersService.findAll();
+    return users;
+  };
 
   @Get(':uuid')
-  findOne(@Param('uuid') uuid: string) {
-    return this.usersService.findOne(uuid);
-  }
+  async findOne(@Param('uuid') uuid: string) {
+    const user = await this.usersService.findOne(uuid);
+    return user
+  };
 
   @Put(':uuid')
-  update(@Param('uuid') uuid: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(uuid, updateUserDto);
-  }
+  async update(@Param('uuid') uuid: string, @Body() updateUserDto: UpdateUserDto) {
+    const updatedUser = await this.usersService.update(uuid, updateUserDto);
+    return updatedUser
+  };
 
   @Delete(':uuid')
-  remove(@Param('uuid') uuid: string) {
-    return this.usersService.remove(uuid);
-  }
-}
+  async remove(@Param('uuid') uuid: string, @Res() res: Response) {
+    await this.usersService.remove(uuid);
+    res.sendStatus(204)
+  };
+};

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { RestaurantsModule } from './restaurants/restaurants.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -24,8 +25,9 @@ import * as Joi from 'joi';
     }),
     MikroOrmModule.forRoot(),
     UsersModule,
+    RestaurantsModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }

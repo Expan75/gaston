@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ObjectType, Field, ID, GraphQLISODateTime } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes, Types } from 'mongoose';
 
@@ -15,6 +15,14 @@ export class User {
   @Field()
   @Prop()
   password: string;
+
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  @Prop()
+  createdAt: Date;
+
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  @Prop()
+  updatedAt: Date;
 
   // required to name the corresponding collection
   get name(): string { return this.email }

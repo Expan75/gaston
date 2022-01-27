@@ -17,7 +17,7 @@ import * as Joi from 'joi';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get('MONGO_DB_CONNECTION_STRING')
+        uri: configService.get('MONGO_DB_CONNECTION_STRING'),
       }),
       inject: [ConfigService],
     }),

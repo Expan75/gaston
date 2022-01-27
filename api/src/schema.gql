@@ -34,5 +34,14 @@ type User {
   email: String!
   id: ID
   password: String!
+  roles: [UserRoles!]!
   updatedAt: DateTime
+}
+
+enum UserRoles {
+  RESOURCES_READ_ALL
+  RESOURCES_WRITE_ALL
+  USERS_READ_ORGANISATION
+  USERS_READ_SELF
+  USERS_WRITE_SELF
 }

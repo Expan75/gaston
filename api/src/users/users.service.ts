@@ -11,23 +11,28 @@ export class UsersService {
     @InjectModel(User.name) private userModel: Model<UserDocument>
   ) {}
 
-  create(createUserInput: CreateUserInput) {
-    return this.userModel.create(createUserInput);
+  async create(createUserInput: CreateUserInput) {
+    const createdUser = await this.userModel.create(createUserInput);
+    return createdUser
   }
 
-  findAll() {
-    return this.userModel.find()
+  async findAll() {
+    const users = await this.userModel.find()
+    return users
   }
 
-  findOne(id: string) {
-    return this.userModel.findById(id)
+  async findOne(id: string) {
+    const user = await this.userModel.findById(id)
+    return user
   }
 
-  update(id: string, updateUserInput: UpdateUserInput) {
-    return this.userModel.findByIdAndUpdate(id, updateUserInput)
+  async update(id: string, updateUserInput: UpdateUserInput) {
+    const updatedUser = await this.userModel.findByIdAndUpdate(id, updateUserInput, { new: true })
+    return updatedUser
   }
 
-  remove(id: string) {
-    return this.userModel.findByIdAndDelete(id)
+  async remove(id: string) {
+    const deletedUser = await this.userModel.findByIdAndDelete(id)
+    return deletedUser
   }
 };

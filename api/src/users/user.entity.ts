@@ -22,8 +22,7 @@ export class User {
   @Prop()
   password: string;
 
-  // TODO: fix type issues
-  @Field(() => UserRoles[])
+  @Field(() => [UserRoles])
   @Prop({ type: [SchemaTypes.String] })
   roles: UserRoles[];
 
@@ -35,7 +34,7 @@ export class User {
   @Prop()
   updatedAt: Date;
 
-  // required to name the corresponding collection
+  // required by mongoose
   get name(): string { return this.email }
 };
 

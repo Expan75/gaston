@@ -12,23 +12,22 @@ export class UsersService {
   ) {}
 
   create(createUserInput: CreateUserInput) {
-    const user = new this.userModel(createUserInput);
-    return user.save();
+    return this.userModel.create(createUserInput);
   }
 
   findAll() {
-    return this.userModel.find().exec()
+    return this.userModel.find()
   }
 
-  findOne(_id: number) {
-    return `This action returns a #${_id} user`;
+  findOne(id: string) {
+    return this.userModel.findById(id)
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+  update(id: string, updateUserInput: UpdateUserInput) {
+    return this.userModel.findByIdAndUpdate(id, updateUserInput)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id: string) {
+    return this.userModel.findByIdAndDelete(id)
   }
-}
+};

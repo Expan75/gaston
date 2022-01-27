@@ -8,11 +8,6 @@ import 'reflect-metadata';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
-
-  // forbid any input to the API not accepted by DTO:s
-  // app.useGlobalPipes(
-  //  new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
-  //  );
   app.use(cookieParser());
   
   await app.listen(configService.get('PORT'));

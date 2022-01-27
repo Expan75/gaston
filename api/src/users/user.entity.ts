@@ -18,7 +18,6 @@ export class User {
   @Prop()
   email: string;
 
-  @Field()
   @Prop()
   password: string;
 

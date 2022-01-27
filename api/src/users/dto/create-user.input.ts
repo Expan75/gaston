@@ -1,4 +1,9 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, registerEnumType } from '@nestjs/graphql';
+import { UserRoles } from '../../common/roles';
+
+registerEnumType(UserRoles, {
+  name: "UserRoles"
+});
 
 @InputType()
 export class CreateUserInput {
@@ -8,4 +13,7 @@ export class CreateUserInput {
 
   @Field()
   password: string;
+
+  @Field(() => [UserRoles], { nullable: true })
+  roles: UserRoles[];
 }

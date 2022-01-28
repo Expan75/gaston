@@ -1,4 +1,5 @@
 import { InputType, Field, registerEnumType } from '@nestjs/graphql';
+import { IsEmail } from 'class-validator';
 import { UserRoles } from '../../common/roles';
 
 registerEnumType(UserRoles, {
@@ -9,6 +10,7 @@ registerEnumType(UserRoles, {
 export class CreateUserInput {
   
   @Field()
+  @IsEmail()
   email: string;
 
   @Field()

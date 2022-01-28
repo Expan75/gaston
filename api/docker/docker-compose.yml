@@ -1,0 +1,22 @@
+version: '3.7'
+
+# see the following links for extending the future for tests on isolated DB:
+# https://stackoverflow.com/questions/42912755/how-to-create-a-db-for-mongodb-container-on-start-up
+
+services:
+    mongodb:
+        image: mongo:latest
+        container_name: mongodb
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: password
+            MONGO_INITDB_DATABASE: gaston
+        ports:
+            - 27017:27017
+        volumes:
+            - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+            - mongodb_volume:/data/db
+
+volumes:
+  mongodb_volume:

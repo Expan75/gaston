@@ -18,6 +18,7 @@ export class User {
   @Prop()
   email: string;
 
+  @Field()
   @Prop()
   password: string;
 
@@ -38,4 +39,5 @@ export class User {
 };
 
 export type UserDocument = User & Document;
+export type PasswordStrippedUser = Omit<User,"password" | "name">;
 export const UserSchema = SchemaFactory.createForClass(User);

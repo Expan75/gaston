@@ -1,10 +1,8 @@
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { PasswordStrippedUser } from '../users/user.entity';
-import { AuthService } from './auth.service';
-
-type AccessToken = { token: string }
+import { PasswordStrippedUser } from '../../users/user.entity';
+import { AuthService } from '../auth.service';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -18,15 +16,5 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException();
     }
     return user;
-  }
-
-  // for JWT integration
-  async login(user: PasswordStrippedUser): Promise<AccessToken> {
-    return { token: "" }
-  }
-
-  // for JWT integration (needs types)
-  async verify(accessToken: AccessToken): Promise<any> {
-    return { email: "email@email.com" }
   }
 }

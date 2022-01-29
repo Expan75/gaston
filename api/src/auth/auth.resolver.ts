@@ -2,8 +2,7 @@ import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { LoginInput, LoginResult, RefreshTokenInput, RefreshTokenResult } from './auth.dto';
 import { AuthService } from './auth.service';
 import { UnauthorizedException } from '@nestjs/common'
-
-type JwtToken = { access_token: string }
+import { JwtToken } from './auth.types';
 
 @Resolver(() => LoginResult)
 export class AuthResolver {

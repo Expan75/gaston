@@ -1,7 +1,7 @@
 /*  Simplified RBAC implmentation that relies on enum to ensure strict set of roles_ 
     The enum results in a string representation of the role with inherent meaning_
     
-    As an example, the role string "users_READ.organisation" states the following:
+    As an example, the role string "USERS.READ.ORGANISATION" states the following:
 
         - the user can READ user information of other users within the same organisation
         - the meaning is effectively captured in pieces -> resource.right.scope

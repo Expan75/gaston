@@ -7,10 +7,22 @@ export class LoginInput {
   
   @Field()
   password: string;
-}
+};
 
 @ObjectType()
 export class LoginResult {
   @Field()
-  token: string
+  access_token: string
+};
+
+@InputType()
+export class RefreshTokenInput {
+  @Field()
+  access_token: string;
+};
+
+@ObjectType()
+export class RefreshTokenResult {
+  @Field()
+  access_token: string
 };

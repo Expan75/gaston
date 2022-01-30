@@ -4,27 +4,24 @@ import { AuthInput, AuthResult, RefreshTokenInput } from './auth.dto';
 import { AuthService } from './auth.service';
 import { JwtToken } from './auth.types';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CurrentUser } from '../common/current-user-decorator';
-import { User } from 'src/users/user.entity';
 
 @Resolver()
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
+  @UseGuards(LocalAuthGuard)
   @Mutation(() => AuthResult)
-  async login(@Args('authInput') authInput: AuthInput): Promise<JwtToken> {
-    const user = await this.authService.authenticate(
-      authInput.email, authInput.password
-    );
-    
-    if (user) {
-      return await this.authService.login(user)
-    }
-    throw new UnauthorizedException('invalid user credentials')
+  async login(@CurrentUser() user, @Args('input') authInput: AuthInput): Promise<JwtToken> {
+    console.log('current user (login):', user)
+    return await this.authService.login(user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => AuthResult)
-  async refreshToken(@Args('refreshTokenInput') refreshTokenInput: RefreshTokenInput): Promise<{access_token: string}> {
+  async refreshToken(@CurrentUser() user, @Args('input') refreshTokenInput: RefreshTokenInput): Promise<{access_token: string}> {
+    console.log('current user (refreshToken):', user)
     return await this.authService.refresh(refreshTokenInput)
   }
 }

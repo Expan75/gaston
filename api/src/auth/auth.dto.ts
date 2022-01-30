@@ -1,7 +1,7 @@
 import { ObjectType, InputType, Field } from '@nestjs/graphql';
 
 @InputType()
-export class LoginInput {
+export class AuthInput {
   @Field()
   email: string;
   
@@ -10,7 +10,7 @@ export class LoginInput {
 };
 
 @ObjectType()
-export class LoginResult {
+export class AuthResult {
   @Field()
   access_token: string
 };
@@ -19,10 +19,4 @@ export class LoginResult {
 export class RefreshTokenInput {
   @Field()
   access_token: string;
-};
-
-@ObjectType()
-export class RefreshTokenResult {
-  @Field()
-  access_token: string
 };

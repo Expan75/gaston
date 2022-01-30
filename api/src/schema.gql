@@ -2,6 +2,15 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AuthInput {
+  email: String!
+  password: String!
+}
+
+type AuthResult {
+  access_token: String!
+}
+
 input CreateUserInput {
   email: String!
   password: String!
@@ -13,19 +22,10 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-input LoginInput {
-  email: String!
-  password: String!
-}
-
-type LoginResult {
-  access_token: String!
-}
-
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
-  login(loginInput: LoginInput!): LoginResult!
-  refreshToken(refreshTokenInput: RefreshTokenInput!): RefreshTokenResult!
+  login(authInput: AuthInput!): AuthResult!
+  refreshToken(refreshTokenInput: RefreshTokenInput!): AuthResult!
   removeUser(id: ID!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
 }
@@ -36,10 +36,6 @@ type Query {
 }
 
 input RefreshTokenInput {
-  access_token: String!
-}
-
-type RefreshTokenResult {
   access_token: String!
 }
 

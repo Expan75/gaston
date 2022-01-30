@@ -1,28 +1,29 @@
+import { Request, UseGuards, UnauthorizedException } from '@nestjs/common'
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
-import { LoginInput, LoginResult, RefreshTokenInput, RefreshTokenResult } from './auth.dto';
+import { AuthInput, AuthResult, RefreshTokenInput } from './auth.dto';
 import { AuthService } from './auth.service';
-import { UnauthorizedException } from '@nestjs/common'
 import { JwtToken } from './auth.types';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { CurrentUser } from '../common/current-user-decorator';
+import { User } from 'src/users/user.entity';
 
-@Resolver(() => LoginResult)
+@Resolver()
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  @Mutation(() => LoginResult)
-  async login(@Args('loginInput') loginInput: LoginInput): Promise<JwtToken> {
+  @Mutation(() => AuthResult)
+  async login(@Args('authInput') authInput: AuthInput): Promise<JwtToken> {
     const user = await this.authService.authenticate(
-      loginInput.email, loginInput.password
+      authInput.email, authInput.password
     );
-    console.log(user)
     
     if (user) {
-      const signedToken = await this.authService.login(user)
-      return signedToken
+      return await this.authService.login(user)
     }
     throw new UnauthorizedException('invalid user credentials')
   }
 
-  @Mutation(() => RefreshTokenResult)
+  @Mutation(() => AuthResult)
   async refreshToken(@Args('refreshTokenInput') refreshTokenInput: RefreshTokenInput): Promise<{access_token: string}> {
     return await this.authService.refresh(refreshTokenInput)
   }

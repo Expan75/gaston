@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import { PasswordStrippedUser } from '../users/user.entity';
-import * as bcrypt from 'bcrypt';
 import { JwtToken } from './auth.types';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -14,11 +14,8 @@ export class AuthService {
 
     async authenticate(email: string, clearTextPassword: string): Promise<PasswordStrippedUser | null> {
         const user = await this.usersService.findOneByEmail(email)
-        console.log('found user in auth service: ', user)
         if (user) {
-            const password = await bcrypt.hash(clearTextPassword, 10)
-            const passwordMatches = await bcrypt.compare(password, user.password)
-            console.log("passwordMatches: ", passwordMatches)
+            const passwordMatches = await bcrypt.compare(clearTextPassword, user.password)
             if (passwordMatches) {
                 const { password, ...passwordStrippedUser } = user;
                 return passwordStrippedUser;

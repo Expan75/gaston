@@ -1,13 +1,15 @@
+import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import { PasswordStrippedUser } from '../users/user.entity';
-import { AuthResult } from './auth.dto';
+import { LoginResult } from './auth.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private configService: ConfigService,
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
@@ -30,20 +32,19 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any): Promise<AuthResult> {
+  async getAccessToken(user: any): Promise<string> {
     // sub contains identify in accordanec /w jwt spec
     const payload = { email: user.email, sub: user._id.toString() };
-    return { access_token: this.jwtService.sign(payload) };
+    const accessToken = this.jwtService.sign(payload);
+    return accessToken
   }
 
-  async refreshToken(token: string): Promise<AuthResult> {
-    const validatedJwt = await this.jwtService.verifyAsync(token);
-    const { password, ...passwordStrippedUser } =
-      await this.usersService.findOneByEmail(validatedJwt.email);
-    if (passwordStrippedUser) {
-      return await this.login(passwordStrippedUser);
-    } else {
-      throw new Error('could not refresh token');
-    }
+  async getRefreshToken(userId: string): Promise<string> {
+    const payload = { email: 'fake', sub: userId };
+    const refreshToken = this.jwtService.sign(payload, {
+      secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
+      expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME'),
+    });
+    return refreshToken
   }
 }

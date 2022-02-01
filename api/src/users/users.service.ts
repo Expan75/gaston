@@ -11,7 +11,7 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async create(createUserInput: CreateUserInput) {
-    const hashedPassword = await bcrypt.hash(createUserInput.password, 10);
+    const hashedPassword: string = await bcrypt.hash(createUserInput.password, 10);
     createUserInput.password = hashedPassword;
     const createdUser = await this.userModel.create(createUserInput);
     return createdUser;
@@ -49,5 +49,13 @@ export class UsersService {
   async remove(id: string) {
     const deletedUser = await this.userModel.findByIdAndDelete(id).lean();
     return deletedUser;
+  }
+
+  async setRefreshToken(refreshToken: string, userId: string) {
+    const hashedRefreshToken: string = await bcrypt.hash(refreshToken, 10);
+    await this.userModel.findByIdAndUpdate(userId,
+      { refreshToken: hashedRefreshToken },
+      { new: true }
+    ).lean()
   }
 }

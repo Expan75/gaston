@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AuthInput {
+  email: String!
+  password: String!
+}
+
 type AuthResult {
   access_token: String!
 }
@@ -19,8 +24,8 @@ scalar DateTime
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
-  login(email: String!, password: String!): AuthResult!
-  refreshToken(refreshToken: String!): AuthResult!
+  login(input: AuthInput!): AuthResult!
+  refreshToken(input: RefreshTokenInput!): AuthResult!
   removeUser(id: ID!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
 }
@@ -28,6 +33,10 @@ type Mutation {
 type Query {
   user(id: ID!): User!
   users: [User!]!
+}
+
+input RefreshTokenInput {
+  access_token: String!
 }
 
 input UpdateUserInput {

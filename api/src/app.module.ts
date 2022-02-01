@@ -10,11 +10,15 @@ import * as Joi from 'joi';
   imports: [
     ConfigModule.forRoot({
       validationSchema: Joi.object({
+        PORT: Joi.number().default(3000),
         NODE_ENV: Joi.string()
           .valid('development', 'test', 'production')
           .default('development'),
         MONGO_DB_CONNECTION_STRING: Joi.string().required(),
-        PORT: Joi.number().default(3000),
+        JWT_ACCESS_TOKEN_SECRET: Joi.string().required(),
+        JWT_ACCESS_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+        JWT_REFRESH_TOKEN_SECRET: Joi.string().required(),
+        JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
       }),
     }),
     MongooseModule.forRootAsync({

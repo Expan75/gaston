@@ -7,6 +7,7 @@ import { AuthResolver } from './auth.resolver';
 import { UsersModule } from '../users/users.module';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { JwtRefreshTokenStrategy } from './strategies/jwt-refresh.strategy';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthResolver, AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthResolver, AuthService, LocalStrategy, JwtStrategy, JwtRefreshTokenStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

@@ -34,7 +34,7 @@ export class AuthService {
 
   async getAccessToken(user: any): Promise<string> {
     // sub contains identify in accordanec /w jwt spec
-    const payload = { email: user.email, sub: user._id.toString() };
+    const payload = { email: user.email, sub: user._id };
     const accessToken = this.jwtService.sign(payload);
     return accessToken
   }

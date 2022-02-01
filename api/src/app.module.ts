@@ -36,6 +36,7 @@ import * as Joi from 'joi';
           ? configService.get('NODE_ENV') === 'development'
           : false,
         autoSchemaFile: [process.cwd(), 'src/schema.gql'].join('/'),
+        context: ({ req, res }) => ({ req, res }),
         sortSchema: true,
       }),
       inject: [ConfigService],

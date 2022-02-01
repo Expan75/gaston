@@ -27,6 +27,9 @@ export class User {
   @Prop()
   password: string;
 
+  @Prop()
+  refreshToken?: string;
+
   @Field(() => [UserRoles])
   @Prop({ type: [SchemaTypes.String] })
   roles: UserRoles[];

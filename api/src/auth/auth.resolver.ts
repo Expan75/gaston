@@ -25,8 +25,6 @@ export class AuthResolver {
     @CurrentUser() user,
     @Args('input') input: RefreshTokenInput,
   ): Promise<AuthResult> {
-    console.log("user tried refreshing token, user: ", user)
-    // return await this.authService.refreshToken({refreshToken});
-    return { access_token: "somekind of refresh token" }
+    return await this.authService.refreshToken(input.access_token);
   }
 }

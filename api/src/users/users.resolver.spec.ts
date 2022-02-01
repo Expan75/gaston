@@ -9,14 +9,16 @@ describe('UsersResolver', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UsersResolver,
-        { provide: UsersService, useFactory: () => ({
+        {
+          provide: UsersService,
+          useFactory: () => ({
             create: jest.fn(),
             findAll: jest.fn(),
             findOne: jest.fn(),
             update: jest.fn(),
             remove: jest.fn(),
-          })
-        }
+          }),
+        },
       ],
     }).compile();
     resolver = module.get<UsersResolver>(UsersResolver);

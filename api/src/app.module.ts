@@ -10,10 +10,12 @@ import * as Joi from 'joi';
   imports: [
     ConfigModule.forRoot({
       validationSchema: Joi.object({
-        NODE_ENV: Joi.string().valid('development', 'test', 'production').default('development'),
+        NODE_ENV: Joi.string()
+          .valid('development', 'test', 'production')
+          .default('development'),
         MONGO_DB_CONNECTION_STRING: Joi.string().required(),
         PORT: Joi.number().default(3000),
-      })
+      }),
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -25,9 +27,11 @@ import * as Joi from 'joi';
     GraphQLModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        debug: true ? configService.get('NODE_ENV') === "development" : false,
-        playground: true ? configService.get('NODE_ENV') === "development" : false,
-        autoSchemaFile: [process.cwd(), 'src/schema.gql'].join("/"),
+        debug: true ? configService.get('NODE_ENV') === 'development' : false,
+        playground: true
+          ? configService.get('NODE_ENV') === 'development'
+          : false,
+        autoSchemaFile: [process.cwd(), 'src/schema.gql'].join('/'),
         sortSchema: true,
       }),
       inject: [ConfigService],

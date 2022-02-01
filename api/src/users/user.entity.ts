@@ -1,11 +1,17 @@
-import { ObjectType, Field, ID, GraphQLISODateTime, registerEnumType } from '@nestjs/graphql';
+import {
+  ObjectType,
+  Field,
+  ID,
+  GraphQLISODateTime,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes } from 'mongoose';
 import { UserRoles } from '../common/roles';
 
 // required for proper type conversion: https://docs.nestjs.com/graphql/unions-and-enums#schema-first
 registerEnumType(UserRoles, {
-  name: "UserRoles"
+  name: 'UserRoles',
 });
 
 @ObjectType()
@@ -34,9 +40,11 @@ export class User {
   updatedAt: Date;
 
   // required by mongoose
-  get name(): string { return this.email }
-};
+  get name(): string {
+    return this.email;
+  }
+}
 
 export type UserDocument = User & Document;
-export type PasswordStrippedUser = Omit<User,"password" | "name">;
+export type PasswordStrippedUser = Omit<User, 'password' | 'name'>;
 export const UserSchema = SchemaFactory.createForClass(User);

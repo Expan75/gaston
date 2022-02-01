@@ -1,1 +1,1 @@
-export type JwtToken = { access_token: string }
+export type JwtToken = { access_token: string };

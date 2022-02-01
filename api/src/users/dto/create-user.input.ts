@@ -3,12 +3,11 @@ import { IsEmail } from 'class-validator';
 import { UserRoles } from '../../common/roles';
 
 registerEnumType(UserRoles, {
-  name: "UserRoles"
+  name: 'UserRoles',
 });
 
 @InputType()
 export class CreateUserInput {
-  
   @Field()
   @IsEmail()
   email: string;

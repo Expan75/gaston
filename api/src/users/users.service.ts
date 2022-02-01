@@ -18,17 +18,18 @@ export class UsersService {
   }
 
   async findAll() {
-    const users = await this.userModel.find();
+    // re: use of lean(), see: https://stackoverflow.com/questions/7503450/how-do-you-turn-a-mongoose-document-into-a-plain-object
+    const users = await this.userModel.find().lean();
     return users;
   }
 
   async findOne(id: string) {
-    const user = await this.userModel.findById(id);
+    const user = await this.userModel.findById(id).lean();
     return user;
   }
 
   async findOneByEmail(email: string) {
-    const user = await this.userModel.findOne({ email: email });
+    const user = await this.userModel.findOne({ email: email }).lean();
     return user;
   }
 
@@ -41,12 +42,12 @@ export class UsersService {
       id,
       updateUserInput,
       { new: true },
-    );
+    ).lean();
     return updatedUser;
   }
 
   async remove(id: string) {
-    const deletedUser = await this.userModel.findByIdAndDelete(id);
+    const deletedUser = await this.userModel.findByIdAndDelete(id).lean();
     return deletedUser;
   }
 }

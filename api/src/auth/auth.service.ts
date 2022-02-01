@@ -30,10 +30,10 @@ export class AuthService {
     return null;
   }
 
-  async login(user: PasswordStrippedUser): Promise<AuthResult> {
-    const payload = { email: user.email, sub: user.id };
-    const token: AuthResult = { access_token: this.jwtService.sign(payload) };
-    return token;
+  async login(user: any): Promise<AuthResult> {
+    // sub contains identify in accordanec /w jwt spec
+    const payload = { email: user.email, sub: user._id.toString() };
+    return { access_token: this.jwtService.sign(payload) };
   }
 
   async refreshToken(token: string): Promise<AuthResult> {

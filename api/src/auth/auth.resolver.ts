@@ -16,7 +16,6 @@ export class AuthResolver {
     @CurrentUser() user,
     @Args('input') input: AuthInput,
   ): Promise<AuthResult> {
-    console.log("user tried logging, user: ", user)
     return await this.authService.login(user);
   }
 

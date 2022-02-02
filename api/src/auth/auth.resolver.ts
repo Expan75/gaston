@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, HttpException, HttpStatus } from '@nestjs/common';
 import {
   Resolver,
   Mutation,
@@ -16,6 +16,7 @@ import {
   RefreshTokenResult,
 } from './auth.dto';
 import { LocalAuthGuard } from './guards/local.guard';
+import { JwtRefreshTokenGuard } from './guards/refresh.guard';
 
 @Resolver()
 export class AuthResolver {
@@ -40,14 +41,23 @@ export class AuthResolver {
     };
   }
 
+  @UseGuards(JwtRefreshTokenGuard)
   @Mutation(() => RefreshTokenResult)
   async refreshToken(
     @CurrentUser() user,
     @Args('input') input: RefreshTokenInput,
   ): Promise<RefreshTokenResult> {
-    const accessToken = await this.authService.getAccessToken(user);
-    return {
-      accessToken: accessToken,
-    };
+    const refreshTokenMatches = await this.usersService.verifyMatchingRefreshToken(input.refreshToken, user._id)
+    if (refreshTokenMatches) {
+      const accessToken = await this.authService.getAccessToken(user);
+      return {
+        accessToken: accessToken,
+      };
+    } else {
+      throw new HttpException({
+        status: HttpStatus.FORBIDDEN,
+        error: 'Please submit a valid refresh token',
+      }, HttpStatus.FORBIDDEN);
+    }
   }
 }

@@ -46,6 +46,12 @@ export class AuthService {
     return accessToken;
   }
 
+  async validateRefreshToken(token: string): Promise<any> {
+    return await this.jwtService.verifyAsync(token, {
+      secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
+    });
+  }
+
   async getRefreshToken(user: any): Promise<string> {
     const payload = { email: user.email, sub: user._id };
     const refreshToken = this.jwtService.sign(payload, {

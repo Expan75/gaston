@@ -3,7 +3,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthService } from '../auth.service';
 
 @Injectable()
-export class JwtAccessTokenGuard implements CanActivate {
+export class JwtRefreshTokenGuard implements CanActivate {
   constructor(
     @Inject(forwardRef(() => AuthService))
     private authService: AuthService
@@ -17,12 +17,13 @@ export class JwtAccessTokenGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.getArgByIndex(2).req
     try {
-      const parsedToken = request.headers.authorization.split(' ')[1]
-      const decodedToken = await this.authService.validateAccessToken(parsedToken)
-      if (decodedToken) {
+      const parsedToken = request.body.variables.input.refreshToken.split(' ')[1];
+      const decodedRefreshToken = await this.authService.validateRefreshToken(parsedToken)
+      if (decodedRefreshToken) {
+        // issueance of new access token is handled at the auth resolver level
         request.user = {
-          _id: decodedToken.sub,
-          email: decodedToken.email
+          _id: decodedRefreshToken.sub,
+          email: decodedRefreshToken.email
         };
         return true
       }

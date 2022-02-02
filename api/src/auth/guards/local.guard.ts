@@ -5,7 +5,6 @@ import { AuthGuard } from '@nestjs/passport';
 @Injectable()
 export class LocalAuthGuard extends AuthGuard('local') {
   getRequest(context: ExecutionContext) {
-    // https://docs.nestjs.com/security/authentication re: altered request context
     const ctx = GqlExecutionContext.create(context);
     const returnedContext = ctx.getContext().req;
 

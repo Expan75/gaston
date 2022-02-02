@@ -16,7 +16,7 @@ import {
   RefreshTokenInput,
   RefreshTokenResult,
 } from './auth.dto';
-import { JwtRefreshGuard } from './guards/jwt-refresh-auth.guard';
+import { JwtRefreshTokenGuard } from './guards/jwt-refresh-auth.guard';
 
 @Resolver()
 export class AuthResolver {
@@ -33,28 +33,24 @@ export class AuthResolver {
     @Context() context: GraphQLExecutionContext,
   ): Promise<LoginResult> {
     const accessToken = await this.authService.getAccessToken(user);
-    const refreshToken = await this.authService.getRefreshToken(user._id);
-    this.usersService.setRefreshToken(refreshToken, user._id);
-
-    // Ideally, should also set cookies (similar to rest): req.res.setHeader('Set-Cookie', [accessToken, refreshToken]);
-    // NOTE: that this behaviour is difficult to get right: https://github.com/benjsicam/nestjs-graphql-microservices/blob/master/api-gateway/src/auth/user.decorator.ts
-    // Instead, let's just transfer the problem to the client side
+    const refreshToken = await this.authService.getRefreshToken(user);
+    await this.usersService.setRefreshToken(refreshToken, user._id);
     return {
-      access_token: accessToken,
-      refresh_token: refreshToken,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
     };
   }
 
-  // @UseGuards(JwtAuthGuard)
-  @UseGuards(JwtRefreshGuard)
+  @UseGuards(JwtRefreshTokenGuard)
   @Mutation(() => RefreshTokenResult)
   async refreshToken(
     @CurrentUser() user,
     @Args('input') input: RefreshTokenInput,
   ): Promise<RefreshTokenResult> {
+    console.log('authResolver.refresh hit by user: ', user)
     const accessToken = await this.authService.getAccessToken(user);
     return {
-      access_token: accessToken,
+      accessToken: accessToken,
     };
   }
 }

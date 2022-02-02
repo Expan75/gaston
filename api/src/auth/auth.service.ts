@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import { PasswordStrippedUser } from '../users/user.entity';
-import { LoginResult } from './auth.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -33,14 +32,16 @@ export class AuthService {
   }
 
   async getAccessToken(user: any): Promise<string> {
-    // sub contains identify in accordanec /w jwt spec
     const payload = { email: user.email, sub: user._id };
-    const accessToken = this.jwtService.sign(payload);
+    const accessToken = this.jwtService.sign(payload, {
+      secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
+      expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME'),
+    });
     return accessToken;
   }
 
-  async getRefreshToken(userId: string): Promise<string> {
-    const payload = { email: 'fake', sub: userId };
+  async getRefreshToken(user: any): Promise<string> {
+    const payload = { email: user.email, sub: user._id };
     const refreshToken = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
       expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME'),

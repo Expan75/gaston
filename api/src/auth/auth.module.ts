@@ -6,7 +6,7 @@ import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolver';
 import { UsersModule } from '../users/users.module';
 import { LocalStrategy } from './strategies/local.strategy';
-import { JwtStrategy } from './strategies/jwt.strategy';
+import { JwtAccessTokenStrategy } from './strategies/jwt-access.strategy';
 import { JwtRefreshTokenStrategy } from './strategies/jwt-refresh.strategy';
 
 @Module({
@@ -27,7 +27,7 @@ import { JwtRefreshTokenStrategy } from './strategies/jwt-refresh.strategy';
     AuthResolver,
     AuthService,
     LocalStrategy,
-    JwtStrategy,
+    JwtAccessTokenStrategy,
     JwtRefreshTokenStrategy,
   ],
   exports: [AuthService],

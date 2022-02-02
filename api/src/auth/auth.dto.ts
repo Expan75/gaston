@@ -12,20 +12,20 @@ export class LoginInput {
 @ObjectType()
 export class LoginResult {
   @Field()
-  access_token: string;
+  accessToken: string;
 
   @Field()
-  refresh_token: string;
+  refreshToken: string;
 }
 
 @InputType()
 export class RefreshTokenInput {
   @Field()
-  refresh_token: string;
+  refreshToken: string;
 }
 
 @ObjectType()
 export class RefreshTokenResult {
   @Field()
-  access_token: string;
+  accessToken: string;
 }

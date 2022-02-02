@@ -31,7 +31,7 @@ export class AuthService {
     return null;
   }
 
-  async validateAccessToken(token: string) {
+  async validateAccessToken(token: string): Promise<any> {
     return await this.jwtService.verifyAsync(token, {
       secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
     });

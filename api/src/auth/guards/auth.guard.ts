@@ -19,19 +19,17 @@ export class JwtAccessTokenGuard implements CanActivate {
       const request = context.getArgByIndex(2).req
       const parsedToken = await request.headers.authorization.split(' ')[1]
       const decodedToken = await this.authService.validateAccessToken(parsedToken)
-      // TODO: insert user object based off token in request scope for decorator to pickup
       if (decodedToken) {
         request.user = {
           _id: decodedToken.sub,
           email: decodedToken.email
         };
-        return true;
+        return true
       }
     } catch (e) {
-      // Note that lack of error handling is due to normal practice for nestjs guards: https://docs.nestjs.com/guards
-      // Nice to have: a way to surface e.g. TokenExpired as query result
+      // insufficent error propogation curtesy of nestjs guard implmentation convention
       console.error(e)
-      return false
     }
+    return false
   }
 }

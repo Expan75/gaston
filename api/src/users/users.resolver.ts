@@ -4,7 +4,7 @@ import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { JwtAccessTokenGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAccessTokenGuard } from '../auth/guards/auth.guard';
 
 @UsePipes(ValidationPipe)
 @Resolver(() => User)

@@ -8,7 +8,6 @@ import {
 } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
-import { LocalAuthGuard } from './guards/local-auth.guard';
 import { CurrentUser } from '../common/current-user-decorator';
 import {
   LoginInput,
@@ -16,7 +15,8 @@ import {
   RefreshTokenInput,
   RefreshTokenResult,
 } from './auth.dto';
-import { JwtRefreshTokenGuard } from './guards/jwt-refresh-auth.guard';
+import { LocalAuthGuard } from './guards/local.guard';
+import { JwtRefreshTokenGuard } from './guards/refresh.guard';
 
 @Resolver()
 export class AuthResolver {
@@ -47,7 +47,6 @@ export class AuthResolver {
     @CurrentUser() user,
     @Args('input') input: RefreshTokenInput,
   ): Promise<RefreshTokenResult> {
-    console.log('authResolver.refresh hit by user: ', user)
     const accessToken = await this.authService.getAccessToken(user);
     return {
       accessToken: accessToken,

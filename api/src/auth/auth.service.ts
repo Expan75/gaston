@@ -31,6 +31,12 @@ export class AuthService {
     return null;
   }
 
+  async validateAccessToken(token: string) {
+    return await this.jwtService.verifyAsync(token, {
+      secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
+    });
+  }
+
   async getAccessToken(user: any): Promise<string> {
     const payload = { email: user.email, sub: user._id };
     const accessToken = this.jwtService.sign(payload, {

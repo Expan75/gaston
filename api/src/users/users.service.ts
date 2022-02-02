@@ -11,7 +11,10 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async create(createUserInput: CreateUserInput) {
-    const hashedPassword: string = await bcrypt.hash(createUserInput.password, 10);
+    const hashedPassword: string = await bcrypt.hash(
+      createUserInput.password,
+      10,
+    );
     createUserInput.password = hashedPassword;
     const createdUser = await this.userModel.create(createUserInput);
     return createdUser;
@@ -38,11 +41,9 @@ export class UsersService {
       const hashedPassword = await bcrypt.hash(updateUserInput.password, 10);
       updateUserInput.password = hashedPassword;
     }
-    const updatedUser = await this.userModel.findByIdAndUpdate(
-      id,
-      updateUserInput,
-      { new: true },
-    ).lean();
+    const updatedUser = await this.userModel
+      .findByIdAndUpdate(id, updateUserInput, { new: true })
+      .lean();
     return updatedUser;
   }
 
@@ -53,17 +54,20 @@ export class UsersService {
 
   async setRefreshToken(refreshToken: string, userId: string) {
     const hashedRefreshToken: string = await bcrypt.hash(refreshToken, 10);
-    await this.userModel.findByIdAndUpdate(userId,
-      { refreshToken: hashedRefreshToken },
-      { new: true }
-    ).lean()
+    await this.userModel
+      .findByIdAndUpdate(
+        userId,
+        { refreshToken: hashedRefreshToken },
+        { new: true },
+      )
+      .lean();
   }
 
   async getUserIfRefreshTokenMatches(refreshToken: string, userId: string) {
     const user = await this.findOne(userId);
     const isRefreshTokenMatching = await bcrypt.compare(
       refreshToken,
-      user.refreshToken
+      user.refreshToken,
     );
     if (isRefreshTokenMatching) {
       return user;

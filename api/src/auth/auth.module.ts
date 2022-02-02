@@ -23,7 +23,13 @@ import { JwtRefreshTokenStrategy } from './strategies/jwt-refresh.strategy';
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthResolver, AuthService, LocalStrategy, JwtStrategy, JwtRefreshTokenStrategy],
+  providers: [
+    AuthResolver,
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    JwtRefreshTokenStrategy,
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}

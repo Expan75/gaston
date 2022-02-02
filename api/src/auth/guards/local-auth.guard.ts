@@ -11,7 +11,8 @@ export class LocalAuthGuard extends AuthGuard('local') {
 
     // local.strategy requires email and password to be available directly in the body
     returnedContext.body.email = returnedContext.body.variables.input.email;
-    returnedContext.body.password = returnedContext.body.variables.input.password;
+    returnedContext.body.password =
+      returnedContext.body.variables.input.password;
 
     return returnedContext;
   }

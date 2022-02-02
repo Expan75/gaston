@@ -13,7 +13,7 @@ export class LoginInput {
 export class LoginResult {
   @Field()
   access_token: string;
-  
+
   @Field()
   refresh_token: string;
 }

@@ -36,7 +36,7 @@ export class AuthService {
     // sub contains identify in accordanec /w jwt spec
     const payload = { email: user.email, sub: user._id };
     const accessToken = this.jwtService.sign(payload);
-    return accessToken
+    return accessToken;
   }
 
   async getRefreshToken(userId: string): Promise<string> {
@@ -45,6 +45,6 @@ export class AuthService {
       secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
       expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME'),
     });
-    return refreshToken
+    return refreshToken;
   }
 }

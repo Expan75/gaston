@@ -16,7 +16,6 @@ import {
   RefreshTokenResult,
 } from './auth.dto';
 import { LocalAuthGuard } from './guards/local.guard';
-import { JwtRefreshTokenGuard } from './guards/refresh.guard';
 
 @Resolver()
 export class AuthResolver {
@@ -41,7 +40,6 @@ export class AuthResolver {
     };
   }
 
-  @UseGuards(JwtRefreshTokenGuard)
   @Mutation(() => RefreshTokenResult)
   async refreshToken(
     @CurrentUser() user,

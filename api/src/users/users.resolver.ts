@@ -5,6 +5,7 @@ import { User } from './user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { JwtAccessTokenGuard } from '../auth/guards/auth.guard';
+import { CurrentUser } from '../common/current-user-decorator';
 
 @UsePipes(ValidationPipe)
 @Resolver(() => User)
@@ -19,7 +20,9 @@ export class UsersResolver {
 
   @UseGuards(JwtAccessTokenGuard)
   @Query(() => [User], { name: 'users' })
-  async findAll() {
+  async findAll(
+    @CurrentUser() user,
+  ) {
     const users = await this.usersService.findAll();
     return users;
   }

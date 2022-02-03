@@ -1,10 +1,11 @@
 import { ValidationPipe, UsePipes, UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
-import { UsersService } from './users.service';
-import { User } from './user.entity';
 import { CreateUserInput, UpdateUserInput } from './user.dto';
 import { JwtAccessTokenGuard } from '../auth/guards/auth.guard';
+import { UsersService } from './users.service';
+import { User } from './user.entity';
 
+@UseGuards(JwtAccessTokenGuard)
 @UsePipes(ValidationPipe)
 @Resolver(() => User)
 export class UsersResolver {
@@ -16,7 +17,6 @@ export class UsersResolver {
     return createdUser;
   }
 
-  @UseGuards(JwtAccessTokenGuard)
   @Query(() => [User], { name: 'users' })
   async findAll() {
     const users = await this.usersService.findAll();

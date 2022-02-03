@@ -21,7 +21,7 @@ export class UsersService {
 
   async findAll() {
     // re: use of lean(), see: https://stackoverflow.com/questions/7503450/how-do-you-turn-a-mongoose-document-into-a-plain-object
-    const users = await this.userModel.find()
+    const users = await this.userModel.find();
     return users;
   }
 
@@ -52,11 +52,9 @@ export class UsersService {
   }
 
   async resetRefreshToken(userId: string) {
-    return await this.userModel.findByIdAndUpdate(
-      userId,
-      { refreshToken: "" },
-      { new: true }
-    ).lean()
+    return await this.userModel
+      .findByIdAndUpdate(userId, { refreshToken: '' }, { new: true })
+      .lean();
   }
 
   async setRefreshToken(refreshToken: string, userId: string) {
@@ -70,9 +68,15 @@ export class UsersService {
       .lean();
   }
 
-  async verifyMatchingRefreshToken(refreshToken: string, userId: string): Promise<boolean> {
+  async verifyMatchingRefreshToken(
+    refreshToken: string,
+    userId: string,
+  ): Promise<boolean> {
     const user = await this.findOne(userId);
-    const tokenMatchesPersisted = await bcrypt.compare(refreshToken.split(' ')[1], user.refreshToken)
+    const tokenMatchesPersisted = await bcrypt.compare(
+      refreshToken.split(' ')[1],
+      user.refreshToken,
+    );
     return tokenMatchesPersisted ? true : false;
   }
 }

@@ -21,11 +21,7 @@ import { LocalStrategy } from './strategies/local.strategy';
     }),
     forwardRef(() => UsersModule),
   ],
-  providers: [
-    AuthResolver,
-    AuthService,
-    LocalStrategy,
-  ],
+  providers: [AuthResolver, AuthService, LocalStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

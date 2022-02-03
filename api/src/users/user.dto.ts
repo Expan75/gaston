@@ -1,4 +1,10 @@
-import { Field, ID, InputType, registerEnumType, PartialType } from '@nestjs/graphql';
+import {
+  Field,
+  ID,
+  InputType,
+  registerEnumType,
+  PartialType,
+} from '@nestjs/graphql';
 import { IsEmail } from 'class-validator';
 import { UserRoles } from './../common/roles';
 
@@ -24,5 +30,3 @@ export class UpdateUserInput extends PartialType(CreateUserInput) {
   @Field(() => ID)
   id: string;
 }
-
-

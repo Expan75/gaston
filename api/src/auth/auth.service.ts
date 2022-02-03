@@ -24,6 +24,7 @@ export class AuthService {
         user.password,
       );
       if (passwordMatches) {
+        // eslint-disable-next-line
         const { password, ...passwordStrippedUser } = user;
         return passwordStrippedUser;
       }

@@ -37,7 +37,7 @@ import * as Joi from 'joi';
           : false,
         autoSchemaFile: [process.cwd(), 'src/schema.gql'].join('/'),
         sortSchema: true,
-        context: ({ req }) => ({ req })
+        context: ({ req }) => ({ req }),
       }),
       inject: [ConfigService],
     }),

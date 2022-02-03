@@ -1,3 +1,5 @@
+![Gaston, logo](./docs/images/logo.png)
+
 # Gaston Monorepo
 
 Welcome to the software repository of Gaston. Gaston aims to abolish physical menus in favour of consumer-centric digital ones. This repository contains the code to make that happen!

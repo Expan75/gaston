@@ -1,4 +1,4 @@
-![Gaston, logo](./docs/images/logo.png)
+![Gaston, logo](./docs/images/gaston-logo.png)
 
 # Gaston Monorepo
 

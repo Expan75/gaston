@@ -1,6 +1,6 @@
-import { InputType, Field, registerEnumType } from '@nestjs/graphql';
+import { Field, ID, InputType, registerEnumType, PartialType } from '@nestjs/graphql';
 import { IsEmail } from 'class-validator';
-import { UserRoles } from '../../common/roles';
+import { UserRoles } from './../common/roles';
 
 registerEnumType(UserRoles, {
   name: 'UserRoles',
@@ -18,3 +18,11 @@ export class CreateUserInput {
   @Field(() => [UserRoles], { nullable: true })
   roles: UserRoles[];
 }
+
+@InputType()
+export class UpdateUserInput extends PartialType(CreateUserInput) {
+  @Field(() => ID)
+  id: string;
+}
+
+

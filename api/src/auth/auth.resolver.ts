@@ -20,7 +20,6 @@ import {
 import { LocalAuthGuard } from './guards/local.guard';
 import { JwtRefreshTokenGuard } from './guards/refresh.guard';
 import { JwtAccessTokenGuard } from './guards/auth.guard';
-import { assert } from 'console';
 
 @Resolver()
 export class AuthResolver {

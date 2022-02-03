@@ -1,8 +1,7 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
+import { CreateUserInput, UpdateUserInput } from './user.dto';
 import { User, UserDocument } from './user.entity';
 import * as bcrypt from 'bcrypt';
 
@@ -22,7 +21,7 @@ export class UsersService {
 
   async findAll() {
     // re: use of lean(), see: https://stackoverflow.com/questions/7503450/how-do-you-turn-a-mongoose-document-into-a-plain-object
-    const users = await this.userModel.find().lean();
+    const users = await this.userModel.find()
     return users;
   }
 
@@ -61,9 +60,7 @@ export class UsersService {
   }
 
   async setRefreshToken(refreshToken: string, userId: string) {
-    console.log('setRefreshToken unhashed: ', refreshToken);
     const hashedRefreshToken: string = await bcrypt.hash(refreshToken, 10);
-    console.log('setRefreshToken hashed: ', hashedRefreshToken);
     return await this.userModel
       .findByIdAndUpdate(
         userId,

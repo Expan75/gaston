@@ -23,9 +23,18 @@ type LoginResult {
   refreshToken: String!
 }
 
+input LogoutInput {
+  message: String!
+}
+
+type LogoutResult {
+  message: String!
+}
+
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   login(input: LoginInput!): LoginResult!
+  logout(input: LogoutInput!): LogoutResult!
   refreshToken(input: RefreshTokenInput!): RefreshTokenResult!
   removeUser(id: ID!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!

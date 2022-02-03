@@ -53,7 +53,9 @@ export class UsersService {
   }
 
   async setRefreshToken(refreshToken: string, userId: string) {
+    console.log('setRefreshToken unhashed: ', refreshToken);
     const hashedRefreshToken: string = await bcrypt.hash(refreshToken, 10);
+    console.log('setRefreshToken hashed: ', hashedRefreshToken);
     await this.userModel
       .findByIdAndUpdate(
         userId,
@@ -65,7 +67,7 @@ export class UsersService {
 
   async verifyMatchingRefreshToken(refreshToken: string, userId: string): Promise<boolean> {
     const user = await this.findOne(userId);
-    const tokenMatchesPersisted = await bcrypt.compare(refreshToken, user.refreshToken)
-    return true ? (tokenMatchesPersisted) : false;
+    const tokenMatchesPersisted = await bcrypt.compare(refreshToken.split(' ')[1], user.refreshToken)
+    return tokenMatchesPersisted ? true : false;
   }
 }

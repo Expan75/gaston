@@ -29,3 +29,15 @@ export class RefreshTokenResult {
   @Field()
   accessToken: string;
 }
+
+@InputType()
+export class LogoutInput {
+  @Field()
+  message: string;
+}
+
+@ObjectType()
+export class LogoutResult {
+  @Field()
+  message: string;
+}

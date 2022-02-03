@@ -14,9 +14,13 @@ import {
   LoginResult,
   RefreshTokenInput,
   RefreshTokenResult,
+  LogoutInput,
+  LogoutResult,
 } from './auth.dto';
 import { LocalAuthGuard } from './guards/local.guard';
 import { JwtRefreshTokenGuard } from './guards/refresh.guard';
+import { JwtAccessTokenGuard } from './guards/auth.guard';
+import { assert } from 'console';
 
 @Resolver()
 export class AuthResolver {
@@ -39,6 +43,16 @@ export class AuthResolver {
       accessToken: accessToken,
       refreshToken: refreshToken,
     };
+  }
+
+  @UseGuards(JwtAccessTokenGuard)
+  @Mutation(() => LogoutResult)
+  async logout(
+    @CurrentUser() user,
+    @Args('input') input: LogoutInput,
+  ): Promise<LogoutResult> {
+    await this.usersService.resetRefreshToken(user._id);
+    return { message: 'logout successful' }
   }
 
   @UseGuards(JwtRefreshTokenGuard)

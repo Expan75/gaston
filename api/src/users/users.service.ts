@@ -52,11 +52,19 @@ export class UsersService {
     return deletedUser;
   }
 
+  async resetRefreshToken(userId: string) {
+    return await this.userModel.findByIdAndUpdate(
+      userId,
+      { refreshToken: "" },
+      { new: true }
+    ).lean()
+  }
+
   async setRefreshToken(refreshToken: string, userId: string) {
     console.log('setRefreshToken unhashed: ', refreshToken);
     const hashedRefreshToken: string = await bcrypt.hash(refreshToken, 10);
     console.log('setRefreshToken hashed: ', hashedRefreshToken);
-    await this.userModel
+    return await this.userModel
       .findByIdAndUpdate(
         userId,
         { refreshToken: hashedRefreshToken },

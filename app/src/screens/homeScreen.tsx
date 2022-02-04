@@ -1,42 +1,49 @@
 import React from 'react';
-import { Button, View, Text } from 'react-native';
-import { getUsers } from '../api/mock';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 
-class HomeScreen extends React.Component {
-  state = { users: [], hasLoadedUsers: false, userLoadingErrorMessage: '' }
-
-  loadUsers() {
-    this.setState({ hasLoadedUsers: false, userLoadingErrorMessage: '' })
-    getUsers()
-      .then((res: any) => {
-        this.setState({ hasLoadedUsers: true, userLoadingErrorMessage: res.users })
-      })
-      .catch(this.handleUserLoadingError);
-  };
-
-  handleUserLoadingError(res: any) {
-    if (res.error === 401) {
-      this.props.navigation.navigate('Login');
-    } else {
-      this.setState({ hasLoadedUsers: false, userLoadingErrorMessage: res.message })
-    }
-  };
-
-  componentDidMount() {
-    this.loadUsers()
-  };
-
-  render() {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>HomeScreen</Text>
-        {this.state.users.map((user) => {
-          <Text key={user.email}>{user.email}</Text>
-        })}
-        <Button title="Log out" onPress={() => this.props.navigation.navigate('Login')} />
-      </View>
-    );
-  };
+const HomeScreen = ({ navigation }: any) => {
+  return (
+    <View style={styles.screenContainer}>
+      <Text style={styles.title}>Gaston</Text>
+      <Pressable
+        style={styles.buttonStyle}
+        onPress={() => navigation.navigate('Details')}>
+        <Text style={styles.buttonTextStyle}>Go To User Screen</Text>
+      </Pressable>
+    </View>
+  );
 };
+
+const styles = StyleSheet.create({
+  screenContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  title: {
+    fontSize: 32,
+  },
+  buttonStyle: {
+    height: 54,
+    width: '80%',
+    marginTop: 32,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FA1DB5',
+    shadowRadius: 5,
+    shadowOpacity: 0.7,
+    shadowColor: 'rgba(46, 229, 157, 0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+  },
+  buttonTextStyle: {
+    color: '#fdfdfd',
+    fontWeight: '700',
+  },
+});
 
 export default HomeScreen;
